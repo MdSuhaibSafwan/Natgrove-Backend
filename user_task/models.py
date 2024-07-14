@@ -1,16 +1,17 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
-# from ClimateOClockBackend.utils import get_base_model
+from lib.utils import get_base_model
 
 User = get_user_model()
-# BaseModel = get_base_model()
+BaseModel = get_base_model()
 
-class Task(models.Model):
+class Task(BaseModel):
     user = models.ForeignKey(
         to=User,
         on_delete=models.SET_NULL,
         related_name="tasks",
+        null=True,
     )
     name = models.CharField(
         max_length=15,
@@ -30,16 +31,16 @@ class Task(models.Model):
         return self.name
 
 
-class UserTaskReward(models.Model):
+class UserTaskReward(BaseModel):
     user = models.ForeignKey(
         to=User,
-        on_delete=models.SET_NULL,
-        related_name="tasks",
+        on_delete=models.CASCADE,
+        related_name="user_task_reward",
     )
     task = models.ForeignKey(
         to=Task,
-        on_delete=models.SET_NULL,
-        related_name="task_rewards",
+        on_delete=models.CASCADE,
+        related_name="rewards",
     )
     description = models.TextField(
         null=True, 
