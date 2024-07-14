@@ -6,6 +6,7 @@ env = environ.Env()
 env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJ_DIR = Path(__file__).resolve().parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -52,6 +53,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ClimateOClockBackend.wsgi.application'
+BASE_MODEL = "ClimateOClockBackend.base_model"
 
 if DEBUG:
     DATABASES = {
