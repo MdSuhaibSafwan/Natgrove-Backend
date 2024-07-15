@@ -6,6 +6,7 @@ from lib.utils import get_base_model
 User = get_user_model()
 BaseModel = get_base_model()
 
+
 class Task(BaseModel):
     user = models.ForeignKey(
         to=User,

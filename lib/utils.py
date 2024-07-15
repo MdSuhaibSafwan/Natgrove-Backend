@@ -10,5 +10,9 @@ def get_base_model():
     spec = importlib.util.spec_from_file_location("BaseModel", path)
     foo = importlib.util.module_from_spec(spec)
     sys.modules["BaseModel"] = foo
-    spec.loader.exec_module(foo)
-    return foo.BaseModel
+    try:
+        spec.loader.exec_module(foo)
+        return foo.BaseModel
+    except Exception as e:
+        print(e)
+        raise ValueError(f"Must specify a model 'BaseModel' in {module_name}")

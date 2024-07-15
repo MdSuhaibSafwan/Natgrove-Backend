@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user.apps.UserConfig',
     'user_task.apps.UserTaskConfig',
 ]
 
@@ -54,6 +55,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ClimateOClockBackend.wsgi.application'
 BASE_MODEL = "ClimateOClockBackend.base_model"
+AUTH_USER_MODEL = "user.User"
 
 if DEBUG:
     DATABASES = {
