@@ -153,7 +153,4 @@ class GPTAssistant(object):
         response = r.json()
         bot_response = response["choices"][0]["message"]["content"]
 
-        message_obj = self.add_user_message_to_db(user, content)
-        self.add_image(image_url, message_obj)
-        self.add_gpt_message_to_db(message_obj, bot_response)
         return bot_response
