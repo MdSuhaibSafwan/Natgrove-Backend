@@ -74,6 +74,7 @@ nav li a{
     display: flex;
     flex-direction: column;
     margin-top: 80px;
+    margin-left: 58px;
 }
 
 .home .text-taddy .home-text h2{
@@ -140,6 +141,7 @@ nav li a{
     height: 409px;
     margin-bottom: -200px;
     margin-right: -40px;
+    margin-left: 65px;
 }
 
 
@@ -150,7 +152,8 @@ nav li a{
     align-items: center;
     margin-top: 70px;
     margin-left: -35px;
-    width: 110%;
+    width: 85%;
+    margin-left: 55px;
 }
 
 .cards .card-1{
@@ -164,7 +167,7 @@ nav li a{
     padding-left: 16px;
     padding-right: 16px;
     transition: 360ms;
-
+    width: 33.33%;
 }
 
 .cards .card-1:hover{
@@ -210,7 +213,7 @@ nav li a{
     padding-left: 13px;
     padding-right: 16px;
     transition: 360ms;
-
+    width: 33.33%;
 }
 
 .cards .card-2:hover{
@@ -255,6 +258,7 @@ nav li a{
     padding-left: 13px;
     padding-right: 16px;
     transition: 360ms;
+    width: 33.33%;
 }
 
 .cards .card-3:hover{
@@ -296,6 +300,7 @@ nav li a{
     margin-top: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
+   
 }
 
 .leaf-and-text .leaf-img{
@@ -306,10 +311,9 @@ nav li a{
 
 .leaf-and-text .leaf-img img{
     margin-top: -28%;
-    width: 288.06px;
-    height: 388.06px;
-    transform: rotate(-8deg);
+    height: 588.06px;
 }
+
 
 .leaf-and-text .leaf-text{
     display: flex;
@@ -317,20 +321,20 @@ nav li a{
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    margin-left: -70px;
+    margin-left: -86px;
     text-align: center;
-    width: 100%;
-    height: 30vh;
+    width: 98%;
+    height: 34vh;
 }
 
 .leaf-and-text .leaf-text h4{
     margin-bottom: 20px;
-    font-size: 23px;
+    font-size: 33px;
     font-weight: 530;
 }
 
 .leaf-and-text .leaf-text p{
-    font-size: 15.9px;
+    font-size: 20px;
     width: 108%;
 }
 
@@ -476,6 +480,22 @@ nav li a{
     font-weight: 550;
     color: rgba(255, 255, 255, 1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
