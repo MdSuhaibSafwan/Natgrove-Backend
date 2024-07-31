@@ -36,7 +36,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ClimateOClockBackend.urls'
+ROOT_URLCONF = 'Natgrove.urls'
 
 TEMPLATES = [
     {
@@ -54,8 +54,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ClimateOClockBackend.wsgi.application'
-BASE_MODEL = "ClimateOClockBackend.base_model"
+WSGI_APPLICATION = 'Natgrove.wsgi.application'
+BASE_MODEL = "Natgrove.base_model"
 AUTH_USER_MODEL = "user.User"
 
 if DEBUG:
