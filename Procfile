@@ -1,1 +1,1 @@
-web: gunicorn ClimateOClockBackend.wsgi --log-file -
+web: gunicorn Natgrove.wsgi --log-file -
