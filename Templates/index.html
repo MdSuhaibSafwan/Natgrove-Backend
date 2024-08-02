@@ -10,52 +10,27 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
     rel="stylesheet">
 
+    <!--Boxicon icons-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <!--======Google Fonts=====-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <style>
-        /* =============FOR LAPTOP========= */
-        @media (min-width: 1440px){
-            .leaf-and-text .leaf-img{
-                margin-left: -50%;
-            }
-            
-            .leaf-and-text .leaf-text{
-                width: 88%;
-            }
-            .eco-challange .eco-img img {
-                margin-left: -35%;
-            }
-            .eco-challange .eco-text {
-                margin-right: 21%;
-                margin-left: 4%;
-            }
-            .eco-challange {
-                margin-top: 5%;
-                margin-left: 9%;
-            }
-            .earn-img {
-                margin-left: 38%;
-            }
-            .greener-future {
-                margin-top: 5%;
-                margin-left: 9%;
-            }
-        }
 
 
-
-    </style>
 </head>
 
-<body>    
+
+<body>
+    
     <div class="home">
+
         <nav>
             <div class="logo">
-                <img src="#" alt="logo_pic">
+                <img src="{% static 'images/lp_images/Natgrove logo.png' %}" alt="logo_pic">
             </div>
 
             <ul>
@@ -256,7 +231,9 @@
         <div class="features-text">
          <p>Feeling Curious? Click to See All Features or Scroll to Stay in the Loop!</p>
         </div>
-
+        <div class="curly-arrow">
+            <img src="{% static 'images/lp_images/Curly-Arrow-PNG 1.png' %}" alt="">
+        </div>
         <div class="features-button">
             <a href="">All Features</a>
         </div>
@@ -271,6 +248,87 @@
 
 
     <!--==All Features section end===-->
+
+
+
+     <!--===Net-zero section start===-->
+
+
+     <div class="net-zero">
+
+        <img src="" alt="">
+
+        <div class="net-zero-text">
+            <p>
+                Our Net Zero concept enables individuals and companies to easily achieve carbon neutrality. We provide the tools and resources you need to make a significant environmental difference, including thorough carbon tracking, customisable action plans, and access to verified carbon offset projects
+            </p>
+        </div>
+
+      <div class="know-more">
+        <a href="">Know more!</a>
+      </div>
+
+
+     </div>
+
+
+      <!--===Net-zero section end===-->
+
+
+      <footer>
+        <!-- <img src="footer img.png" alt=""> -->
+        <div class="logo-social-media">
+
+            <div class="logo-img">
+                <img src="{% static 'images/lp_images/Natgrove logo.png' %}" alt="">
+                
+            </div>
+
+
+             <div class="social-media">
+
+                <a href=""><i class='bx bxl-facebook'></i></a>
+
+                <a href=""><i class='bx bxl-twitter' ></i></a>
+
+                <a href=""> <i class='bx bxl-instagram' ></i></a>
+
+                <a href=""><i class='bx bxl-linkedin' ></i></a>
+
+            </div>
+        </div>
+
+        <div class="quick-links">
+            <h3>Quick links</h3>
+            <ul>
+                <li>How it works</li>
+                <li>How it works</li>
+                <li>How it works</li>
+                <li>How it works</li>
+            </ul>
+        </div>
+
+        <div class="legal-stuff">
+            <h3>Quick links</h3>
+            <ul>
+                <li>How it works</li>
+                <li>How it works</li>
+                <li>How it works</li>
+                <li>How it works</li>
+            </ul>
+        </div>
+
+        <div class="keep-update">
+            <h3>Keep up-to-date!</h3>
+
+            <div class="subscribe">
+                <a href="#">Subscribe</a>
+            </div>
+
+        </div>
+
+      </footer>
+
 
 
 </body>
