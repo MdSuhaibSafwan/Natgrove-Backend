@@ -1,3 +1,4 @@
+{% load static %}
 :root{
     --color-white:#FFFFFF;
     --color-button : #F8F8F8;
@@ -14,6 +15,7 @@
 }
 html{
     padding: 40px 55px;
+    padding-bottom: 0px;
 
 }
 body{
@@ -28,12 +30,24 @@ nav{
     top: 0;
     left: 0;
     width: 100%;
-    padding: 15px 55px;
+    padding: 5px 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: var(--color-white);
     z-index: 99;
+}
+
+nav .logo{
+    width: 20%;
+    height: 7vh;
+}
+
+nav .logo img{
+    width: 100%;
+    margin-top: -34%;
+    margin-left: -15%;
+
 }
 
 nav ul{
@@ -51,10 +65,7 @@ nav .join-now button{
     position: relative;
     background: #043233;
     color: var(--color-button);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 5px 15px;
     border-radius: 3px;
     border: none;
     font-weight: 600;
@@ -74,7 +85,6 @@ nav li a{
     display: flex;
     flex-direction: column;
     margin-top: 80px;
-    margin-left: 58px;
 }
 
 .home .text-taddy .home-text h2{
@@ -136,12 +146,12 @@ nav li a{
 
 }
 
+
 .home .text-taddy .taddy-img img{
     width: 526px;
     height: 409px;
     margin-bottom: -200px;
     margin-right: -40px;
-    margin-left: 65px;
 }
 
 
@@ -152,8 +162,8 @@ nav li a{
     align-items: center;
     margin-top: 70px;
     margin-left: -35px;
-    width: 85%;
-    margin-left: 55px;
+    width: 100%;
+    margin-left: -10px;
 }
 
 .cards .card-1{
@@ -164,8 +174,8 @@ nav li a{
     margin-right:5px;
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 10px;
+    padding-right: 0px;
     transition: 360ms;
     width: 33.33%;
 }
@@ -173,7 +183,6 @@ nav li a{
 .cards .card-1:hover{
     background:#333333;
     color: var(--color-white);
-    padding-right: 35px;
 }
 
 .cards .card-1 .number-one{
@@ -219,7 +228,6 @@ nav li a{
 .cards .card-2:hover{
     background:#333333;
     color: var(--color-white);
-    padding-right: 35px;
 }
 
 .cards .card-2 .number-two{
@@ -256,7 +264,7 @@ nav li a{
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 13px;
-    padding-right: 16px;
+    /* padding-right: 16px; */
     transition: 360ms;
     width: 33.33%;
 }
@@ -264,7 +272,6 @@ nav li a{
 .cards .card-3:hover{
     background:#333333;
     color: var(--color-white);
-    padding-right: 35px;
 }
 
 .cards .card-3 .number-three{
@@ -300,7 +307,6 @@ nav li a{
     margin-top: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
-   
 }
 
 .leaf-and-text .leaf-img{
@@ -310,10 +316,11 @@ nav li a{
 }
 
 .leaf-and-text .leaf-img img{
-    margin-top: -28%;
-    height: 588.06px;
+    margin-top: -24%;
+    width: 292.06px;
+    height: 432.06px;
+    margin-left: 28px;
 }
-
 
 .leaf-and-text .leaf-text{
     display: flex;
@@ -321,21 +328,23 @@ nav li a{
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    margin-left: -86px;
+    margin-left: -40px;
     text-align: center;
-    width: 98%;
-    height: 34vh;
+    width: 91%;
+    height: 30vh;
+    margin-top: 20px;
 }
 
 .leaf-and-text .leaf-text h4{
     margin-bottom: 20px;
-    font-size: 33px;
+    font-size: 25px;
     font-weight: 530;
 }
 
 .leaf-and-text .leaf-text p{
-    font-size: 20px;
-    width: 108%;
+    font-size: 18px;
+    width: 115%;
+    font-weight: 400;
 }
 
 .eco-challange{
@@ -346,14 +355,17 @@ nav li a{
 }
 
 .eco-challange .eco-text{
-    margin-right: 27%;
+    margin-right: 34%;
+    margin-top: 48px;
+    margin-left: 21px;
+    width: 78%;
 }
 
 .eco-challange .eco-text h6{
-    font-size: 13.6px;
+    font-size: 15.6px;
     font-weight: 400;
     background: #FFB18F;
-    width: 27.7%;
+    width: 25.7%;
     text-align: center;
     border-radius: 7px;
     padding-top: 8px;
@@ -364,17 +376,21 @@ nav li a{
 }
 
 .eco-challange .eco-text h3{
+    font-size: 28px;
     font-weight: 530;
-    margin-bottom: 10px;
+    margin-bottom: 22px;
 }
 
+.eco-challange .eco-text{
+    font-size: 20px;
+    line-height: 1.5;
+}
 
 .eco-challange .eco-img img{
-    margin-left: -53%;
+    margin-left: -38%;
     height: 400px;
-    margin-top: -96px;
+    margin-top: -49px;
     width: 375px;
-
 }
 
 .earn-redeem{
@@ -387,21 +403,22 @@ nav li a{
 
 
 .earn-redeem .earn-img img{
-    margin-left: -17px;
-    margin-top: -117px;
-    height: 407px;
+    margin-left: -40px;
+    margin-top: -122px;
+    height: 401px;
     width: 393px;
 }
 
 .earn-redeem .earn-text{
-    margin-left: 27%;
+    margin-left: 22%;
+    width: 73%;
 }
 
 .earn-redeem .earn-text h5{
     font-size: 15px;
     font-weight: 400;
     background: #02B554;
-    width: 39%;
+    width: 35%;
     text-align: center;
     border-radius: 7px;
     padding-top: 8px;
@@ -412,8 +429,12 @@ nav li a{
 }
 
 .earn-redeem .earn-text h3{
-    font-weight: 530;
-    margin-bottom: 10px;
+    margin-left: 4px;
+    margin-bottom: 18px;
+}
+
+.earn-redeem .earn-text p{
+    font-size: 19px;
 }
 
 .greener-future{
@@ -446,9 +467,13 @@ nav li a{
     margin-bottom: 10px;
 }
 
+.greener-future .greener-text p{
+    font-size: 19px;
+}
+
 .greener-future .greener-img img{
     margin-left: -189px;
-    margin-top: -112px;
+    margin-top: -139px;
     width: 394px;
 }
 
@@ -466,6 +491,12 @@ nav li a{
     font-size: 15px;
 }
 
+.all-features .curly-arrow{
+    margin-left: 98px;
+    margin-bottom: -9px;
+    margin-top: -18px;
+}
+
 .all-features .features-button{
     background: rgba(6, 48, 9, 1);
     padding: 10px 17px;
@@ -481,24 +512,249 @@ nav li a{
     color: rgba(255, 255, 255, 1);
 }
 
+.net-zero{
+    border: 3px solid black;
+    border-radius: 50px 0px 50px 0px;
+    width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 30px;
+    margin-left: 22%;
+}
+
+.net-zero .net-zero-text {
+    font-size: 17px;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.net-zero .know-more{
+    background:rgba(235, 129, 71, 1);
+    padding: 10px 20px;
+    border-right: 4px solid  rgba(0, 0, 0, 1);
+    border-bottom: 4px solid rgba(0, 0, 0, 1);
+    border-radius: 7px ;
+    font-weight: 550;
+}
+
+.net-zero .know-more a{
+    color: var(--color-white);
+}
+footer{
+    margin-top: 10%;
+    margin-left: -5.6%;
+    width: 110.7%;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    justify-content: center;
+    align-items: center;
+    height: 48vh;
+    background-position: cover;
+    background-image: url("/static/images/lp_images/Vector 3 png.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    
+}  
+/* 
+footer img{ 
+    width: 110.7%;
+    height: 45vh;
+} */
+
+footer .logo-social-media{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: -50%;
+    
+}
+
+footer .logo-social-media .logo-img{
+    width: 100%;
+    height: 7vh;
+
+}
+
+footer .logo-social-media .logo-img img{
+    width: 251%;
+    margin-top: -38%;
+    margin-left: -54%;
+}
+
+footer .social-media{
+    margin-top: 76%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 8px 2px;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: row;
+    width: 168%;
+    margin-left: 37%;
+    background-color: rgba(205, 205, 205, 0.4);
+}
+
+footer .social-media a{
+    font-size: 20px;
+    color: rgb(66, 110, 0);
+    
+}
+
+
+footer .quick-links{
+    margin-top: -30%;
+}
+
+footer .quick-links h3{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+footer .quick-links li{
+    font-size: 13px;
+    line-height: 2;
+}
+
+footer .legal-stuff{
+    margin-top: -30%;
+}
+
+footer .legal-stuff h3{
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+footer .legal-stuff li{
+    font-size: 13px;
+    line-height: 2;
+}
+
+
+footer .keep-update{
+    margin-top: -60%;
+}
+
+footer .keep-update  h3{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+footer .keep-update .subscribe{
+    background: #00963f;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+footer .keep-update .subscribe a{
+    font-weight: 550;
+    color: var(--color-white);
+}
 
 
 
 
 
+@media (width <= 1100px){
+    .cards{
+
+        width: 103%;
+        margin-left: -19px;
+    }
+
+}
+
+@media (width <= 1060px){
+    .cards{
+        width: 106%;
+    margin-left: -3%;
+    }
+
+    .cards .card-2 .card-two-text span {
+        font-size: 13px;
+    }
+    .cards .card-1 .card-one-text span {
+        font-size: 13px;
+    }
+    .cards .card-3 .card-three-text span {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 987px){
+    .cards {
+        width: 103%;
+    }
+
+    .cards .card-2 .card-two-text span {
+        font-size: 11px;
+    }
+    .cards .card-1 .card-one-text span {
+        font-size: 11px;
+    }
+    .cards .card-3 .card-three-text span {
+        font-size: 11px;
+    }
+
+    .leaf-and-text .leaf-img {
+        margin-left: -54%;
+    }
+    .eco-challange .eco-text h6 {
+        width: 30.7%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1060px){
+    .cards .card-2 .card-two-text span {
+        font-size: 13px;
+    }
+    .cards .card-1 .card-one-text span {
+        font-size: 13px;
+    }
+    .cards .card-3 .card-three-text span {
+        font-size: 13px;
+    }
+}
 
 
+@media (min-width: 1440px){
+    .leaf-and-text .leaf-img {
+        margin-left: -50%;
+    }
 
+    .leaf-and-text .leaf-text {
+        width: 88%;
+        margin-top: -28px
+    }
 
+    .eco-challange .eco-img {
+        margin-left: 3%;
+    }
+    .eco-challange .eco-text {
+        margin-left: 8%;
+    }
 
+    .earn-redeem .earn-text {
+        margin-left: 16%;
+        width : 68%;
+    }
+    
+    .earn-img {
+        margin-left: 17%;
+    }
 
+    .greener-future .greener-text {
+        margin-right: 27%;
+        margin-left: 8%;
+    }
 
-
-
-
-
-
-
-
-
-
+}
