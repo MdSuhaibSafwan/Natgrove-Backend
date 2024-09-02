@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     
     'user.apps.UserConfig',
     'user_task.apps.UserTaskConfig',
+    'challenge.apps.ChallengeConfig',
 ]
 
 MIDDLEWARE = [
@@ -35,6 +36,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS
 
 ROOT_URLCONF = 'Natgrove.urls'
 

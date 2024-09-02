@@ -34,8 +34,8 @@ class GPTAssistant(object):
         self.set_default_assistant()
 
     def set_default_assistant(self):
-            self.assistant_id = os.environ.get("assistant_id")
-            return self.assistant_id
+        self.assistant_id = os.environ.get("assistant_id")
+        return self.assistant_id
 
     def set_default_thread(self, thread):
         self.thread_id = thread.id
