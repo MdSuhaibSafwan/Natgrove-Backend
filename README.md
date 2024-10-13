@@ -5,8 +5,10 @@ After installation of python use the following command after inserting into the 
 2. ### virtualenv venv ###
 A New virtualenv will be created naming folder "venv"
 
-Use the following command,
+Use the following command
+
 3. ### venv\Scripts\activate.bat ###
+
 A virtualenv will be activated
 
 4. ### pip install -r requirements.txt ###
