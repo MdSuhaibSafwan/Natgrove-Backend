@@ -15,6 +15,7 @@ A virtualenv will be activated
 This command will install all the requirements file
 
 After that you're ready to run the server
+
 5. ### python manage.py runserver ###
 
 Use the postman doc to manage the whole API
