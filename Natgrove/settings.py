@@ -73,7 +73,7 @@ AUTH_USER_MODEL = "user.User"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-POSTGRES_URL = os.environ.get('POSTGRES_URL', None)
+POSTGRES_URL = os.environ.get('DATABASE_URL_GENERAL', None)
 
 if DEVELOPMENT_MODE:
     DATABASES = {
