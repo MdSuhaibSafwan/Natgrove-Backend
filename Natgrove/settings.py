@@ -13,7 +13,7 @@ PROJ_DIR = Path(__file__).resolve().parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "1234")
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
-DEVELOPMENT_MODE = os.environ.get("DEVELOPMENT_MODE", "True") == "True"
+DEVELOPMENT_MODE = True
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "natgrove-47db19e790a0.herokuapp.com", "natgrove.com", "www.natgrove.com", '.vercel.app']
 
