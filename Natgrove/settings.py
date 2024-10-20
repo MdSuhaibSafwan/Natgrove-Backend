@@ -82,7 +82,7 @@ if DEVELOPMENT_MODE:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+else:
     if POSTGRES_URL is None:
         raise Exception("DATABASE_URL environment variable not defined")
         
