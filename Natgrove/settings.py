@@ -73,7 +73,7 @@ AUTH_USER_MODEL = "user.User"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASE_URL_GENERAL = os.environ.get('DATABASE_URL_GENERAL', None)
+POSTGRES_URL = os.environ.get('POSTGRES_URL', None)
 
 if DEVELOPMENT_MODE:
     DATABASES = {
@@ -83,11 +83,11 @@ if DEVELOPMENT_MODE:
         }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if DATABASE_URL_GENERAL is None:
+    if POSTGRES_URL is None:
         raise Exception("DATABASE_URL environment variable not defined")
         
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL_GENERAL),
+        'default': dj_database_url.parse(POSTGRES_URL),
     }
 
 REST_FRAMEWORK = {
