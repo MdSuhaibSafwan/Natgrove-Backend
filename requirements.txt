@@ -7,7 +7,7 @@ certifi
 colorama
 distro
 dj-database-url
-Django
+Django==4.0.1
 django-environ
 django-storages
 djangorestframework
