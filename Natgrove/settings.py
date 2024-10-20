@@ -1,4 +1,6 @@
+import sys
 import os
+import dj_database_url
 from pathlib import Path
 import environ
 
@@ -11,6 +13,7 @@ PROJ_DIR = Path(__file__).resolve().parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "1234")
 
 DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEVELOPMENT_MODE = os.environ.get("DEVELOPMENT_MODE", "True") == "True"
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "natgrove-47db19e790a0.herokuapp.com", "natgrove.com", "www.natgrove.com", '.vercel.app']
 
@@ -64,12 +67,27 @@ WSGI_APPLICATION = 'Natgrove.wsgi.application'
 BASE_MODEL = "Natgrove.base_model"
 AUTH_USER_MODEL = "user.User"
 
-if DEBUG:
+
+
+
+# Database
+# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+DATABASE_URL_GENERAL = os.environ.get('DATABASE_URL_GENERAL', None)
+
+if DEVELOPMENT_MODE:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
+    }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if DATABASE_URL_GENERAL is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+        
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL_GENERAL),
     }
 
 REST_FRAMEWORK = {
