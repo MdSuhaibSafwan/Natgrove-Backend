@@ -21,3 +21,4 @@ pillow
 psycopg2-binary
 pydantic_core
 six
+django-cors-headers==4.5.0
