@@ -34,6 +34,11 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    USER_TYPE = [
+        ["C", "COMPANY"],
+        ["CU", "COMAPNY USER"],
+        ["NU", "NORMAL USER"],
+    ]
     email = models.EmailField(unique=True, )
     first_name = models.CharField(max_length=100, null=True)
     middle_name = models.CharField(max_length=100, null=True)
@@ -44,6 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    
+    user_type = models.CharField(
+        choices=USER_TYPE,
+        max_length=2,
+    )
 
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
@@ -62,5 +72,120 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.is_admin
 
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
+    company = models.ForeignKey(
+        "Company",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.name
 
 
+class Company(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
+    name = models.CharField(
+        max_length=60,
+    )
+    description = models.TextField()
+    profile_image = models.ImageField()
+    is_verified = models.BooleanField(
+        default=False,
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class UserPost(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    task = models.ForeignKey(
+        "user_task.UserTask",
+        on_delete=models.CASCADE,
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return str(self.id)
+
+
+class PostReact(models.Model):
+    POST_REACT_TYPE = [
+        ["L", "Like"],
+        ["H", "Heart"],
+        ["HAHA", "HAHA"],
+    ]
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    post = models.ForeignKey(
+        UserPost,
+        on_delete=models.CASCADE,
+    )
+    react_type = models.CharField(
+        max_length=4,
+        choices=POST_REACT_TYPE
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        unique_together = [["user", "post"], ]
+        ordering = ["-date_created", ]
+
+    def __str__(self):
+        return str(self.id)
+
+
+class PostComment(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    post = models.ForeignKey(
+        UserPost,
+        on_delete=models.CASCADE,
+    )
+    comment = models.TextField()
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return str(self.id)

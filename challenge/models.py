@@ -1,11 +1,18 @@
 from django.db import models
 from user_task.models import Task
 from django.contrib.auth import get_user_model
+from user.models import Company
 
 User = get_user_model()
 
 
 class Challenge(models.Model):
+    company = models.ForeignKey(
+        Company,
+        related_name="company_challenges",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
     users = models.ManyToManyField(
         User,
         related_name="user_challenges",
@@ -32,6 +39,9 @@ class Challenge(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def is_company_challenge(self):
+        return self.company != None
 
 
 class TaskChallenge(models.Model):
@@ -62,6 +72,9 @@ class UserChallengeJoining(models.Model):
     challenge = models.ForeignKey(
         Challenge,
         on_delete=models.CASCADE,
+    )
+    points = models.PositiveIntegerField(
+        default=0
     )
     date_created = models.DateTimeField(
         auto_now_add=True,

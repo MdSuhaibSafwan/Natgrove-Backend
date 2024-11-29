@@ -20,6 +20,45 @@ class UserPermissionSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UserAchievementSerializer(serializers.ModelSerializer):
+    average_co2_saved = serializers.SerializerMethodField()
+    badges_earned = serializers.SerializerMethodField()
+    user_impacts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["average_co2_saved", "badges_earned", "user_impacts"]
+
+    def get_average_co2_saved(self, obj):
+
+        return None
+
+    def get_badges_earned(self, obj):
+
+        return None
+
+    def get_user_impacts(self, obj):
+
+        return None
+
+
+class UserActivitySerializer(serializers.ModelSerializer):
+    point_history = serializers.SerializerMethodField()
+    recent_posts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["point_history", "recent_posts"]
+
+    def get_point_history(self, obj):
+
+        return None
+
+    def get_recent_posts(self, obj):
+        
+        return None
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(read_only=True)
     is_active = serializers.ReadOnlyField()
@@ -32,10 +71,23 @@ class UserProfileSerializer(serializers.ModelSerializer):
     groups = UserGroupSerializer(read_only=True, many=True)
     user_permissions = UserPermissionSerializer(many=True, read_only=True)
 
+    achievements = serializers.SerializerMethodField()
+    activities = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         # fields = "__all__"
         exclude = ["password", "last_login", "is_superuser", "is_admin", "date_created", "last_updated"]
+
+    def get_achievements(self, obj):
+        serializer = UserAchievementSerializer(obj)
+        serializer.context.update({"request": self.context.get("request")})
+        return serializer.data
+
+    def get_activities(self, obj):
+        serializer = UserActivitySerializer(obj)
+        serializer.context.update({"request": self.context.get("request")})
+        return serializer.data
 
 
 class UserPublicProfileSerializer(serializers.ModelSerializer):

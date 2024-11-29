@@ -1,8 +1,8 @@
 import sys
 import os
+import environ
 import dj_database_url
 from pathlib import Path
-import environ
 
 env = environ.Env()
 env.read_env()
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'user_task.apps.UserTaskConfig',
     'challenge.apps.ChallengeConfig',
+    "reward.apps.RewardConfig",
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -91,12 +92,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Natgrove.wsgi.application'
 BASE_MODEL = "Natgrove.base_model"
 AUTH_USER_MODEL = "user.User"
-
-
-
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 POSTGRES_URL = os.environ.get('DATABASE_URL_GENERAL', None)
 

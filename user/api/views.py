@@ -53,3 +53,16 @@ def deactivate_account(request, *args, **kwargs):
         "message": "account deactivated"
     }
     return Response(data, status=status.HTTP_200_OK)
+
+
+@permission_classes([IsAuthenticated, ])
+@api_view(["GET", ])
+def user_feed(request, *args, **kwargs):
+
+    data = {
+
+    }
+    return Response(data, status=status.HTTP_200_OK)
+
+
+
