@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index),
     path("api/user/", include("user.api.urls")),
+    path("api/", include("user_task.api.urls")),
 ]
 
 if settings.DEBUG:
