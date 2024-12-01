@@ -2,6 +2,7 @@ from django.db import models
 from user_task.models import Task
 from django.contrib.auth import get_user_model
 from user.models import Company
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -30,6 +31,7 @@ class Challenge(models.Model):
     image = models.ImageField(
         upload_to="challenge/images",
     )
+    challenge_expiry_time = serializers.DateTimeField()
     date_created = models.DateTimeField(
         auto_now_add=True,
     )
@@ -42,6 +44,10 @@ class Challenge(models.Model):
     
     def is_company_challenge(self):
         return self.company != None
+    
+    def is_active(self):
+        now = timezone.now()
+        return now > self.challenge_expiry_time
 
 
 class TaskChallenge(models.Model):

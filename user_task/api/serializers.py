@@ -3,6 +3,12 @@ from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, Us
 from user.api.serializers import UserPublicProfileSerializer
 
 
+class TaskImpactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TaskImpact
+        fields = "__all__"
+
 class UserTaskFileSerializer(serializers.ModelSerializer):
 
     class Meta:
