@@ -29,6 +29,13 @@ class PostReactSerializer(serializers.ModelSerializer):
         model = PostReact
         fields = "__all__"
 
+    def create(self, validated_data):
+        request = self.context.get("request")
+        post = self.context.get("post")
+        validated_data["user"] = request.user
+        validated_data["post"] = post 
+        return super().create(validated_data)
+
 
 class PostCommentSerializer(serializers.ModelSerializer):
     user = UserPublicProfileSerializer(
@@ -42,3 +49,9 @@ class PostCommentSerializer(serializers.ModelSerializer):
         model = PostComment
         fields = "__all__"
 
+    def create(self, validated_data):
+        request = self.context.get("request")
+        post = self.context.get("post")
+        validated_data["user"] = request.user
+        validated_data["post"] = post
+        return super().create(validated_data)

@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
-from .serializers import FeedSerializer, UserPostSerializer, PostReactSerializer, PostCommentSerializer
+from .serializers import UserPostSerializer, PostReactSerializer, PostCommentSerializer
 from django.contrib.auth import get_user_model
 from ..utils import get_user_feed
 from .permissions import IsAuthenticated
@@ -13,7 +13,7 @@ User = get_user_model()
 
 
 class FeedListAPIView(ListAPIView):
-    serializer_class = FeedSerializer
+    serializer_class = UserPostSerializer
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
@@ -35,6 +35,7 @@ class UserPostModelViewSet(viewsets.ModelViewSet):
         )
         serializer.context.update({
             "request": self.request,
+            "post": self.get_object(),
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -48,6 +49,7 @@ class UserPostModelViewSet(viewsets.ModelViewSet):
         )
         serializer.context.update({
             "request": self.request,
+            "post": self.get_object(),
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
