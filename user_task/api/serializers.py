@@ -9,6 +9,7 @@ class UserTaskFileSerializer(serializers.ModelSerializer):
         model = UserTaskFile
         fields = "__all__"
 
+
 class CO2SavedSerializer(serializers.ModelSerializer):
 
     class Meta:
