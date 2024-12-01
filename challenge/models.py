@@ -31,7 +31,7 @@ class Challenge(models.Model):
     image = models.ImageField(
         upload_to="challenge/images",
     )
-    challenge_expiry_time = serializers.DateTimeField()
+    challenge_expiry_time = models.DateTimeField()
     date_created = models.DateTimeField(
         auto_now_add=True,
     )
