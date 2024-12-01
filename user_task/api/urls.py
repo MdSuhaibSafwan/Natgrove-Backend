@@ -7,6 +7,6 @@ router.register("tasks", views.TaskViewSet, "tasks")
 router.register("user-task", views.UserTaskViewSet, "user-task")
 
 urlpatterns = [
-    path("categories/", views.TaskCategoryListAPIView.as_view(), ),
+    path("tasks/categories/", views.TaskCategoryListAPIView.as_view(), ),
     path("", include(router.urls)),
 ]

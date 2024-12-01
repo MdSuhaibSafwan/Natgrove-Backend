@@ -21,7 +21,7 @@ class TaskImpact(BaseModel):
 
 class SDG(BaseModel):
     title = models.CharField(
-        max_length=10,
+        max_length=30,
     )
     image = models.ImageField(
         upload_to='sdg/images',
@@ -125,9 +125,6 @@ class UserTask(BaseModel):
         null=True,
         blank=True,
     )
-    files_uploaded = models.FileField(
-        upload_to="user-task/files/"
-    )
     products_quantity = models.PositiveIntegerField(
         default=1,
     )
@@ -150,6 +147,20 @@ class UserTask(BaseModel):
 
     def __str__(self):
         return str(self.task)
+
+
+class UserTaskFile(BaseModel):
+    user_task = models.ForeignKey(
+        UserTask,
+        on_delete=models.CASCADE,
+        related_name="files_uploaded"
+    )
+    file = models.FileField(
+        upload_to="user-task/files/"
+    )
+
+    def __str__(self):
+        return str(self.user_task)
 
 
 class UserTaskReward(BaseModel):
