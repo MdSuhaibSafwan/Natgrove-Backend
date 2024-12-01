@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'user_task.apps.UserTaskConfig',
     'challenge.apps.ChallengeConfig',
     "reward.apps.RewardConfig",
+    "feed.apps.FeedConfig",
 
     'rest_framework',
     'rest_framework.authtoken',
