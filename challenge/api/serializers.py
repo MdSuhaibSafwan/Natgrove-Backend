@@ -41,6 +41,7 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
 class ChallengeDetailSerializer(serializers.ModelSerializer):
     leaderboard = serializers.SerializerMethodField()
+    activities = serializers.SerializerMethodField()
     is_user_already_joined = serializers.SerializerMethodField()
     challenge_percentage_completed = serializers.SerializerMethodField()
     challenge_impacts = serializers.SerializerMethodField()
@@ -62,6 +63,10 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
     def get_challenge_percentage_completed(self, obj):
 
         return float(50)
+
+    def get_activities(self, obj):
+
+        return []
 
     def get_leaderboard(self, obj):
         qs = obj.userchallengejoining_set.all().order_by("-points")
@@ -97,8 +102,11 @@ class ChallengeJoinSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         challenge = self.context.get("challenge")
-        request = self.context.get('request')
-        qs = challenge.users.filter(users__id=request.user.id)
+        request = self.context.get('request', None)
+        if not request:
+            raise serializers.ValidationError("request object not found")
+
+        qs = challenge.users.filter(id=request.user.id)
         if qs.exists():
             raise serializers.ValidationError("Already joined")
         

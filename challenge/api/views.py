@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
-from .serializers import ChallengeSerializer, ChallengeDetailSerializer, ChallengeAddTaskSerializer
+from .serializers import ChallengeSerializer, ChallengeDetailSerializer, ChallengeAddTaskSerializer, ChallengeJoinSerializer
 from ..models import Challenge
 from rest_framework.decorators import action
 from rest_framework import status
@@ -55,8 +55,12 @@ class ChallengeViewSet(viewsets.ModelViewSet):
             "challenge": obj,
             "request": self.request,
         })
+        serializer.is_valid(raise_exception=True)
         challenge = serializer.save()
         serializer = self.serializer_class(instance=challenge)
+        serializer.context.update({
+            "request": self.request,
+        })
         data = {
             "message": "User Joined in challenge",
             "data": serializer.data,

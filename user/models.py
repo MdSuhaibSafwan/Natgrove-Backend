@@ -106,6 +106,10 @@ class Company(models.Model):
     is_verified = models.BooleanField(
         default=False,
     )
+    logo = models.ImageField(
+        upload_to="company/logo",
+        null=True,
+    )
     date_created = models.DateTimeField(
         auto_now_add=True
     )
