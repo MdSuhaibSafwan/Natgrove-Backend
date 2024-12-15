@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ..models import Challenge, UserChallengeJoining
 from user_task.api.serializers import TaskSerializer, TaskImpactSerializer
-from user_task.models import Task
+from user_task.models import Task, TaskImpact
 from user.api.serializers import UserPublicProfileSerializer
 
 
@@ -16,17 +16,37 @@ class UserChallengeJoiningSerializer(serializers.ModelSerializer):
 
 
 class ChallengeSerializer(serializers.ModelSerializer):
-    user_joined = serializers.SerializerMethodField()
-    tasks = TaskSerializer(
-        read_only=True,
-    )
+    total_user_joined = serializers.SerializerMethodField()
+    is_user_already_joined = serializers.SerializerMethodField()
+    challenge_percentage_completed = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Challenge
+        # fields = "__all__"
+        exclude = [
+            "users",
+        ]
+
+    def get_challenge_percentage_completed(self, obj):
+        return float(50)
+
+    def get_total_user_joined(self, obj):
+        return obj.userchallengejoining_set.all().count()
+        
+    def get_is_user_already_joined(self, obj):
+        request = self.context.get("request")
+        qs = obj.users.filter(id=request.user.id)
+        return qs.exists()
+
+
+class ChallengeDetailSerializer(serializers.ModelSerializer):
+    leaderboard = serializers.SerializerMethodField()
     is_user_already_joined = serializers.SerializerMethodField()
     challenge_percentage_completed = serializers.SerializerMethodField()
     challenge_impacts = serializers.SerializerMethodField()
 
     class Meta:
         model = Challenge
-        # fields = "__all__"
         exclude = [
             "users",
         ]
@@ -43,14 +63,14 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
         return float(50)
 
-    def get_user_joined(self, obj):
+    def get_leaderboard(self, obj):
         qs = obj.userchallengejoining_set.all().order_by("-points")
         serializer = UserChallengeJoiningSerializer(qs, many=True)
         return serializer.data
     
     def get_is_user_already_joined(self, obj):
         request = self.context.get("request")
-        qs = obj.users.filter(id=request.user)
+        qs = obj.users.filter(id=request.user.id)
         return qs.exists()
 
 

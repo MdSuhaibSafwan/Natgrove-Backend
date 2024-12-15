@@ -13,6 +13,7 @@ class Challenge(models.Model):
         related_name="company_challenges",
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
     users = models.ManyToManyField(
         User,
