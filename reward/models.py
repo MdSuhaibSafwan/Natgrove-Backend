@@ -34,6 +34,10 @@ class CompanyReward(BaseModel):
 
 
 class ProductCard(BaseModel):
+    company_reward = models.OneToOneField(
+        CompanyReward,
+        on_delete=models.CASCADE,
+    )
     title = models.CharField(
         max_length=100,
     )
@@ -45,6 +49,10 @@ class ProductCard(BaseModel):
 
 
 class GiftVoucher(BaseModel):
+    company_reward = models.OneToOneField(
+        CompanyReward,
+        on_delete=models.CASCADE,
+    )
     title = models.CharField(
         max_length=200,
     )
@@ -63,7 +71,7 @@ class GiftVoucher(BaseModel):
         return self.title
 
 
-class RedeemedPoint(BaseModel):
+class RedeemPoint(BaseModel):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

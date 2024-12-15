@@ -11,6 +11,7 @@ urlpatterns = [
     path("api/", include("user_task.api.urls")),
     path("api/", include("feed.api.urls")),
     path("api/", include("challenge.api.urls")),
+    path("api/", include("reward.api.urls")),
 ]
 
 if settings.DEBUG:
