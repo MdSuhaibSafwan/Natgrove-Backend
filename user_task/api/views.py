@@ -6,6 +6,8 @@ from rest_framework.exceptions import NotFound, PermissionDenied, ValidationErro
 from rest_framework.generics import ListAPIView
 from ..utils import get_tasks_by_task_category, search_in_task_and_task_category
 from . import pagination
+from ..filters import UserTaskBookmarkFilter
+from rest_framework import permissions
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -52,10 +54,38 @@ class UserTaskViewSet(viewsets.ModelViewSet):
 
 
 class UserTaskBookmarkViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.UserTaskBookmarkSerializer
+    serializer_classes = {
+        "create": serializers.UserTaskBookmarkSerializer,
+    }
+    default_serializer_class = serializers.TaskSerializer
+    filter_backends = [UserTaskBookmarkFilter, ]
+    permission_classes = [permissions.IsAuthenticated, ]
+
+    def get_serializer_class(self):
+        serializer = self.serializer_classes.get(self.action, self.default_serializer_class)
+        return serializer
 
     def get_queryset(self):
-        qs = UserTaskBookmark.objects.filter(
+        return Task.objects.all()
+
+    def filter_queryset(self, queryset):
+        bookmark_queryset = UserTaskBookmark.objects.filter(
             user=self.request.user
         )
-        return qs
+        q = self.request.query_params.get("q", None)
+        if q:
+            q = q.lower()
+            if q != "completed":
+                raise ValidationError("set 'q' to 'completed'")
+            
+            user_task_queryset = UserTask.objects.filter(
+                user=self.request.user
+            )
+            queryset = Task.objects.filter(id__in=user_task_queryset.values_list("task__id", flat=True))
+            return queryset
+
+        queryset = Task.objects.filter(id__in=bookmark_queryset.values_list("task__id", flat=True))
+        for backend in list(self.filter_backends):
+            queryset = backend().filter_queryset(self.request, queryset, self)
+
+        return queryset
