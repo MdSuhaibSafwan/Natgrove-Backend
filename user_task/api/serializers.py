@@ -1,8 +1,41 @@
 from rest_framework import serializers
-from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, UserTaskReward, UserTaskFile
+from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, UserTaskReward, UserTaskFile, UserTaskBookmark
 from user.api.serializers import UserPublicProfileSerializer
 from challenge.models import TaskChallenge
 from django.db.models import Q
+from django.db import IntegrityError
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+class UserTaskBookmarkSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+    task = serializers.SerializerMethodField()
+    task_id = serializers.CharField(
+        write_only=True
+    )
+
+    class Meta:
+        model = UserTaskBookmark
+        fields = "__all__"
+
+    def create(self, validated_data):
+        request = self.context.get("request")
+        validated_data["user"] = request.user
+        try:
+            obj = super().create(validated_data)
+        except IntegrityError as e:
+            raise serializers.ValidationError(e)
+
+        return obj
+    
+    def get_task(self, obj):
+        serializer = TaskSerializer(obj.task, context={"request": self.context.get("request")})
+        return serializer.data
+
 
 class TaskImpactSerializer(serializers.ModelSerializer):
 
@@ -104,5 +137,28 @@ class UserTaskSerializer(serializers.ModelSerializer):
                 user_task=obj,
                 file=file
             )
-
+        self.new_instance_created = True
         return obj
+
+    def will_show_coin_reward(self, instance):
+        task = instance.task
+        challenge = instance.challenge
+        if challenge:
+            return True
+
+        if not task.is_verification_required:
+            return True
+
+        return False
+
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance=instance)
+        data.update({
+            "show_coin": False
+        })
+        new_instance_created = getattr(self, "new_instance_created", None)
+        if new_instance_created:
+            data["show_coin"] = self.will_show_coin_reward(instance)
+
+        return data

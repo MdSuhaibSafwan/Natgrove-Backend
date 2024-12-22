@@ -81,6 +81,9 @@ class Task(BaseModel):
     max_limit_complete = models.PositiveIntegerField(
         default=1,
     )
+    is_verification_required = models.BooleanField(
+        default=False
+    )
     co2_saved = models.ForeignKey(
         CO2Saved,
         on_delete=models.SET_NULL,
@@ -184,3 +187,20 @@ class UserTaskReward(BaseModel):
 
     def __str__(self):
         return str(self.user)
+
+
+class UserTaskBookmark(BaseModel):
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return str(self.task)
+
+    class Meta:
+        unique_together = [["task", "user", ], ]

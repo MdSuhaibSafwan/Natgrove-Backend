@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, UserTaskReward
+from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, UserTaskReward, UserTaskBookmark
 from django.contrib.auth import get_user_model
 from . import serializers
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
@@ -49,3 +49,13 @@ class UserTaskViewSet(viewsets.ModelViewSet):
             user=self.request.user,
         )
         return queryset
+
+
+class UserTaskBookmarkViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.UserTaskBookmarkSerializer
+
+    def get_queryset(self):
+        qs = UserTaskBookmark.objects.filter(
+            user=self.request.user
+        )
+        return qs
