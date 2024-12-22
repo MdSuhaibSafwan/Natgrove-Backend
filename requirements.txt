@@ -22,4 +22,4 @@ psycopg2-binary
 pydantic_core
 six
 django-cors-headers==4.5.0
-django-filter==24.3
+django-filter
