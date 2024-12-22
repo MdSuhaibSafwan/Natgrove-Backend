@@ -78,6 +78,9 @@ class Task(BaseModel):
         upload_to="task/image",
     )
     points = models.PositiveIntegerField()
+    max_limit_complete = models.PositiveIntegerField(
+        default=1,
+    )
     co2_saved = models.ForeignKey(
         CO2Saved,
         on_delete=models.SET_NULL,

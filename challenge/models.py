@@ -60,6 +60,9 @@ class TaskChallenge(models.Model):
         Challenge,
         on_delete=models.CASCADE,
     )
+    task_max_limit = models.PositiveIntegerField(
+        default=3,
+    )
     date_created = models.DateTimeField(
         auto_now_add=True,
     )
