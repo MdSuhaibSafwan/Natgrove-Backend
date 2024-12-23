@@ -59,6 +59,43 @@ class UserActivitySerializer(serializers.ModelSerializer):
         return None
 
 
+class UserChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(
+        write_only=True,
+    )
+    password1 = serializers.CharField(
+        write_only=True,
+    )
+    password2 = serializers.CharField(
+        write_only=True,
+    )
+
+    def validate_old_password(self, val):
+        request = self.context.get("request")
+        user = request.user
+        if not user.check_password(val):
+            raise serializers.ValidationError("Entered Password didn't match your previous password")       
+         
+        return val
+
+    def validate(self, attrs):
+        password1 = attrs["password1"]
+        password2 = attrs["password2"]
+        if password1 != password2:
+            raise serializers.ValidationError("Password Mismatch")
+        
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        new_password = validated_data.get("password1")
+        request = self.context.get("request")
+        user = request.user
+
+        user.set_password(new_password)
+        user.save()
+        return user
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(read_only=True)
     is_active = serializers.ReadOnlyField()
