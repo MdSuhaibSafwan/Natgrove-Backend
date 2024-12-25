@@ -8,6 +8,9 @@ from ..utils import get_tasks_by_task_category, search_in_task_and_task_category
 from . import pagination
 from ..filters import UserTaskBookmarkFilter
 from rest_framework import permissions
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -89,3 +92,14 @@ class UserTaskBookmarkViewSet(viewsets.ModelViewSet):
             queryset = backend().filter_queryset(self.request, queryset, self)
 
         return queryset
+
+
+class UserContributionAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        serializer = serializers.UserTaskContributionSerializer(request.user, many=False)
+        serializer.context.update({
+            "request": request
+        })
+
+        return Response(serializer.data, status=status.HTTP_200_OK)

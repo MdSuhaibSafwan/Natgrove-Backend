@@ -9,5 +9,6 @@ router.register("task-bookmark", views.UserTaskBookmarkViewSet, basename="task-b
 
 urlpatterns = [
     path("tasks/categories/", views.TaskCategoryListAPIView.as_view(), ),
+    path("user-contributions/", views.UserContributionAPIView.as_view(), ),
     path("", include(router.urls)),
 ]

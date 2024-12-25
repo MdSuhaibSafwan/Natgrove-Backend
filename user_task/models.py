@@ -23,6 +23,9 @@ class SDG(BaseModel):
     title = models.CharField(
         max_length=30,
     )
+    sdg_number = models.PositiveIntegerField(
+        null=True,
+    )
     image = models.ImageField(
         upload_to='sdg/images',
     )

@@ -43,6 +43,14 @@ class TaskImpactSerializer(serializers.ModelSerializer):
         model = TaskImpact
         fields = "__all__"
 
+
+class SDGSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SDG
+        fields = "__all__"
+
+
 class UserTaskFileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -60,6 +68,10 @@ class CO2SavedSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     co2_saved = CO2SavedSerializer(
         read_only=True
+    )
+    sdgs = SDGSerializer(
+        read_only=True,
+        many=True,
     )
 
     class Meta:
@@ -90,13 +102,28 @@ class UserTaskSerializer(serializers.ModelSerializer):
         child=serializers.FileField(), 
         write_only=True,
     )
+    task = TaskSerializer(
+        read_only=True,
+    )
+    task_id = serializers.CharField(
+        write_only=True,
+    )
 
     class Meta:
         model = UserTask
         fields = "__all__"
 
+    def validate_task_id(self, value):
+        try:
+            task = Task.objects.get(id=value)
+        except Task.DoesNotExist as e:
+            print(e)
+            raise serializers.ValidationError(e)
+        self.task = task
+        return value
+
     def validate(self, attrs):
-        task = attrs["task"]
+        task = self.task
         request = self.context.get("request")
         is_challenge = hasattr(attrs, "challenge")
         if is_challenge:
@@ -140,7 +167,7 @@ class UserTaskSerializer(serializers.ModelSerializer):
         self.new_instance_created = True
         return obj
 
-    def will_show_coin_reward(self, instance):
+    def will_show_points_reward(self, instance):
         task = instance.task
         challenge = instance.challenge
         if challenge:
@@ -151,14 +178,58 @@ class UserTaskSerializer(serializers.ModelSerializer):
 
         return False
 
-
     def to_representation(self, instance):
         data = super().to_representation(instance=instance)
         data.update({
-            "show_coin": False
+            "show_points": False
         })
         new_instance_created = getattr(self, "new_instance_created", None)
         if new_instance_created:
-            data["show_coin"] = self.will_show_coin_reward(instance)
+            data["show_points"] = self.will_show_points_reward(instance)
 
         return data
+
+
+
+class UserTaskContributionSerializer(serializers.Serializer):
+    sdgs = serializers.SerializerMethodField()
+    actions_taken = serializers.SerializerMethodField()
+
+    def get_sdgs(self, obj):
+        request = self.context.get("request")
+        user = request.user
+        task_qs = self.get_user_tasks()
+        sdg_qs = SDG.objects.filter(
+            id__in=task_qs.values_list("sdgs", flat=True)
+        )
+        serializer = SDGSerializer(sdg_qs, many=True, context={"request": request})
+        return serializer.data
+
+    def get_user_actions(self):
+        request = self.context.get("request")
+        user = request.user
+        if getattr(self, "user_actions", None):
+            return self.user_actions
+
+        qs = UserTask.objects.filter(user=user)
+        print("User Task QS --> ", qs)
+        setattr(self, "user_actions", qs)
+        return qs
+
+    def get_user_tasks(self):
+        if getattr(self, "user_task", None):
+            return self.user_task
+
+        user_task = self.get_user_actions()
+        qs = Task.objects.filter(
+            id__in=user_task.values_list("task__id", flat=True)
+        )
+        setattr(self, "user_tasks", qs)
+        return qs
+
+    def get_actions_taken(self, obj):
+        request = self.context.get("request")
+        user = request.user
+        qs = self.get_user_actions()
+        serializer = UserTaskSerializer(qs, many=True, context={"request": request})
+        return serializer.data
