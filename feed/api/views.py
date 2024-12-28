@@ -17,7 +17,7 @@ class FeedListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        qs = get_user_feed(self.request.user)
+        qs = UserPost.objects.all()
         return qs
 
 
@@ -28,7 +28,7 @@ class UserPostModelViewSet(viewsets.ModelViewSet):
         qs = UserPost.objects.all()
         return qs
 
-    @action(methods=["POST", ], detail=True, url_path="comment")
+    @action(methods=["PATCH", ], detail=True, url_path="comment")
     def comment_on_post(self, *args, **kwargs):
         serializer = PostCommentSerializer(
             data=self.request.data
@@ -42,7 +42,7 @@ class UserPostModelViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(methods=["POST", ], detail=True, url_path="react")
+    @action(methods=["PATCH", ], detail=True, url_path="react")
     def react_on_post(self, *args, **kwargs):
         serializer = PostReactSerializer(
             data=self.request.data

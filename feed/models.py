@@ -10,7 +10,7 @@ class UserPost(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    task = models.ForeignKey(
+    user_task = models.ForeignKey(
         "user_task.UserTask",
         on_delete=models.CASCADE,
     )

@@ -8,7 +8,7 @@ class UserPostSerializer(serializers.ModelSerializer):
     user = UserPublicProfileSerializer(
         read_only=True,
     )
-    task = UserTaskSerializer(
+    user_task = UserTaskSerializer(
         read_only=True,
     )
 
