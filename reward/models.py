@@ -86,8 +86,6 @@ class RedeemPoint(BaseModel):
     )
 
     def save(self, *args, **kwargs):
-        if (self.voucher) and (self.coupon):
-            raise ValueError("Cannot get voucher and coupon at same time")
 
         return super().save(*args, **kwargs)
 

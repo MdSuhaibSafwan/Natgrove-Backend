@@ -13,14 +13,14 @@ class CompanyRewardModelViewSet(ModelViewSet):
         qs = CompanyReward.objects.all()
         return qs
 
-    @action(detail=True, url_path="redeem-reward")
+    @action(methods=["POST", ], detail=True, url_path="redeem-reward")
     def redeem_reward(self, *args, **kwargs):
         obj = self.get_object()
         context = {
             "request": self.request,
             "reward": obj,
         }
-        serializer = serializers.RedeemRewardSerializer(data=self.request.data)
+        serializer = serializers.RedeemRewardSerializer(data=self.request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         data = {
