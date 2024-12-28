@@ -178,8 +178,8 @@ class UserTaskReward(BaseModel):
         on_delete=models.CASCADE,
         related_name="user_task_reward",
     )
-    task = models.ForeignKey(
-        to=Task,
+    user_task = models.ForeignKey(
+        to=UserTask,
         on_delete=models.CASCADE,
         related_name="rewards",
     )
