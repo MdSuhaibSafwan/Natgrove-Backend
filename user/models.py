@@ -54,6 +54,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         choices=USER_TYPE,
         max_length=2,
     )
+    total_points = models.PositiveIntegerField(
+        default=0
+    )
+    push_notifications = models.BooleanField(
+        default=True,
+    )
 
     date_created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
