@@ -75,16 +75,6 @@ def deactivate_account(request, *args, **kwargs):
 
 @permission_classes([IsAuthenticated, ])
 @api_view(["GET", ])
-def user_feed(request, *args, **kwargs):
-
-    data = {
-
-    }
-    return Response(data, status=status.HTTP_200_OK)
-
-
-@permission_classes([IsAuthenticated, ])
-@api_view(["GET", ])
 def get_content_for_app(request, *args, **kwargs):
     q = request.query_params.get("q", None)
     if q is None:

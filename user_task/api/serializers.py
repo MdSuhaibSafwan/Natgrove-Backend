@@ -51,6 +51,13 @@ class SDGSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class TaskCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TaskCategory
+        fields = "__all__"
+
+
 class UserTaskFileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -63,7 +70,14 @@ class CO2SavedSerializer(serializers.ModelSerializer):
     class Meta:
         model = CO2Saved
         fields = "__all__"
-        
+
+
+class TaskListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Task
+        fields = "__all__"
+
 
 class TaskSerializer(serializers.ModelSerializer):
     co2_saved = CO2SavedSerializer(
@@ -72,6 +86,13 @@ class TaskSerializer(serializers.ModelSerializer):
     sdgs = SDGSerializer(
         read_only=True,
         many=True,
+    )
+    impacts = TaskImpactSerializer(
+        read_only=True,
+        many=True
+    )
+    category = TaskCategorySerializer(
+        read_only=True,
     )
 
     class Meta:
@@ -231,5 +252,21 @@ class UserTaskContributionSerializer(serializers.Serializer):
         request = self.context.get("request")
         user = request.user
         qs = self.get_user_actions()
-        serializer = UserTaskSerializer(qs, many=True, context={"request": request})
+        qs = Task.objects.filter(id__in=qs.values_list("task", flat=True))
+        serializer = TaskListSerializer(qs, many=True, context={"request": request})
         return serializer.data
+
+
+
+class UserTaskForFeedSerializer(serializers.ModelSerializer):
+    files_uploaded = UserTaskFileSerializer(
+        read_only=True,
+        many=True,
+    )
+    task = TaskSerializer(
+        read_only=True,
+    )
+
+    class Meta:
+        model = UserTask
+        fields = "__all__"

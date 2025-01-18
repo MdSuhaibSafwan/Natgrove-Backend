@@ -8,5 +8,6 @@ router.register("posts", views.UserPostModelViewSet, basename="posts")
 
 urlpatterns = [
     path("feed/", views.FeedListAPIView.as_view(), ),
+    path("feed/<id>/", views.FeedDetailAPIView.as_view(), ),
     path("", include(router.urls)),
 ]

@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    
+
     user_type = models.CharField(
         choices=USER_TYPE,
         max_length=2,
@@ -82,11 +82,16 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
+        related_name="profile",
     )
     company = models.ForeignKey(
         "Company",
         on_delete=models.SET_NULL,
         null=True,
+    )
+    image = models.ImageField(
+        default="user/images/default.webp",
+        upload_to="user/images/"
     )
     date_created = models.DateTimeField(
         auto_now_add=True
@@ -96,7 +101,7 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return str(self.user)
 
 
 class Company(models.Model):

@@ -1,10 +1,23 @@
 from ..models import UserPost, PostComment, PostReact
 from rest_framework import serializers
 from user.api.serializers import UserPublicProfileSerializer
-from user_task.api.serializers import UserTaskSerializer
+from user_task.api.serializers import UserTaskSerializer, UserTaskForFeedSerializer
 
 
 class UserPostSerializer(serializers.ModelSerializer):
+    user = UserPublicProfileSerializer(
+        read_only=True,
+    )
+    user_task = UserTaskForFeedSerializer(
+        read_only=True,
+    )
+
+    class Meta:
+        model = UserPost
+        fields = "__all__"
+
+
+class UserPostDetailSerializer(serializers.ModelSerializer):
     user = UserPublicProfileSerializer(
         read_only=True,
     )
@@ -15,6 +28,8 @@ class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPost
         fields = "__all__"
+
+
 
 
 class PostReactSerializer(serializers.ModelSerializer):

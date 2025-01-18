@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group, Permission
+from ..models import UserProfile
 
 User = get_user_model()
 
@@ -104,7 +105,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(required=True)
     address = serializers.CharField(required=True)
     phone_number = serializers.CharField(required=True)
-
     groups = UserGroupSerializer(read_only=True, many=True)
     user_permissions = UserPermissionSerializer(many=True, read_only=True)
 
@@ -127,7 +127,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        # fields = "__all__"
+        exclude = ["id", "user", ]
+
+
 class UserPublicProfileSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(
+        read_only=True,
+    )
     groups = UserGroupSerializer(read_only=True, many=True)
     user_permissions = UserPermissionSerializer(many=True, read_only=True)
 
