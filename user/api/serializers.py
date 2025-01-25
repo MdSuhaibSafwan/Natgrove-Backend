@@ -25,10 +25,13 @@ class UserAchievementSerializer(serializers.ModelSerializer):
     average_co2_saved = serializers.SerializerMethodField()
     badges_earned = serializers.SerializerMethodField()
     user_impacts = serializers.SerializerMethodField()
+    total_actions_taken = serializers.SerializerMethodField()
+    last_month_actions_taken = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ["average_co2_saved", "badges_earned", "user_impacts"]
+        fields = ["average_co2_saved", "badges_earned", "user_impacts",
+        "total_actions_taken", "last_month_actions_taken"]
 
     def get_average_co2_saved(self, obj):
 
@@ -39,6 +42,14 @@ class UserAchievementSerializer(serializers.ModelSerializer):
         return None
 
     def get_user_impacts(self, obj):
+
+        return None
+
+    def get_total_actions_taken(self, obj):
+
+        return None
+
+    def get_last_month_actions_taken(self, obj):
 
         return None
 
