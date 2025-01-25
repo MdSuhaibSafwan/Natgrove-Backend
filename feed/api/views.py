@@ -15,7 +15,7 @@ User = get_user_model()
 
 class FeedListAPIView(ListAPIView):
     serializer_class = UserPostSerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = []
 
     def get_queryset(self):
         qs = UserPost.objects.all()

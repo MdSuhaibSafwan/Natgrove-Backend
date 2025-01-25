@@ -1,7 +1,39 @@
 from ..models import UserPost, PostComment, PostReact
 from rest_framework import serializers
 from user.api.serializers import UserPublicProfileSerializer
-from user_task.api.serializers import UserTaskSerializer, UserTaskForFeedSerializer
+from user_task.api.serializers import UserTaskSerializer, TaskSerializer
+from user_task.models import UserTask, UserTaskFile
+
+
+class UserTaskFileForFeedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserTaskFile
+        fields = "__all__"
+
+
+class UserTaskForFeedSerializer(serializers.ModelSerializer):
+    files_uploaded = UserTaskFileForFeedSerializer(
+        read_only=True, many=True,
+    )
+
+    class Meta:
+        model = UserTask
+        fields = "__all__"
+
+
+class UserTaskDetailForFeedSerializer(serializers.ModelSerializer):
+    files_uploaded = UserTaskFileForFeedSerializer(
+        read_only=True, many=True,
+    )
+    task = TaskSerializer(
+        read_only=True,
+    )
+
+    class Meta:
+        model = UserTask
+        fields = "__all__"
+
 
 
 class UserPostSerializer(serializers.ModelSerializer):
@@ -21,7 +53,7 @@ class UserPostDetailSerializer(serializers.ModelSerializer):
     user = UserPublicProfileSerializer(
         read_only=True,
     )
-    user_task = UserTaskSerializer(
+    user_task = UserTaskDetailForFeedSerializer(
         read_only=True,
     )
 
