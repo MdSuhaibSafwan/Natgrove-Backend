@@ -168,12 +168,13 @@ class UserTaskSerializer(serializers.ModelSerializer):
         read_only=True,
         many=True,
     )
+    task = TaskSerializer(
+        read_only=True,
+    )
+
     files = serializers.ListField(
         child=serializers.FileField(), 
         write_only=True,
-    )
-    task = TaskSerializer(
-        read_only=True,
     )
     task_id = serializers.CharField(
         write_only=True,
@@ -194,33 +195,6 @@ class UserTaskSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         task = self.task
-        request = self.context.get("request")
-        is_challenge = hasattr(attrs, "challenge")
-        if is_challenge:
-            times_user_took_challenge = UserTask.objects.filter(
-                challenge=challenge,
-                user=request.user,
-                task=task,
-                is_active=True,
-            ).count()
-            challenge = getattr(attrs, "challenge")
-            task_challenge = TaskChallenge.objects.get(
-                challenge=challenge,
-                task=task,
-            )
-            if task_challenge.task_max_limit <= times_user_took_challenge:
-                raise serializers.ValidationError("Already max limit reached for the challenge")
-
-        else:
-            times_user_took_challenge = UserTask.objects.filter(
-                is_active=True,
-                challenge=None,
-                user=request.user,
-                task=task,
-            ).count()
-            if task.max_limit_complete <= times_user_took_challenge:
-                raise serializers.ValidationError("Max Limit reached for task")
-
 
         return super().validate(attrs)
 
@@ -229,6 +203,7 @@ class UserTaskSerializer(serializers.ModelSerializer):
         validated_data["user"] = request.user
         files = validated_data.pop("files")
         obj = super().create(validated_data)
+
         for file in files:
             UserTaskFile.objects.create(
                 user_task=obj,
@@ -236,29 +211,6 @@ class UserTaskSerializer(serializers.ModelSerializer):
             )
         self.new_instance_created = True
         return obj
-
-    def will_show_points_reward(self, instance):
-        task = instance.task
-        challenge = instance.challenge
-        if challenge:
-            return True
-
-        if not task.is_verification_required:
-            return True
-
-        return False
-
-    def to_representation(self, instance):
-        data = super().to_representation(instance=instance)
-        data.update({
-            "show_points": False
-        })
-        new_instance_created = getattr(self, "new_instance_created", None)
-        if new_instance_created:
-            data["show_points"] = self.will_show_points_reward(instance)
-
-        return data
-
 
 
 class UserTaskContributionSerializer(serializers.Serializer):
