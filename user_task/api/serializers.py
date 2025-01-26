@@ -41,35 +41,40 @@ class TaskImpactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskImpact
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["date_created", "last_updated", ]
 
 
 class SDGSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SDG
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["date_created", "last_updated", ]
 
 
 class TaskCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskCategory
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["date_created", "last_updated", ]
 
 
 class UserTaskFileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserTaskFile
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["date_created", "last_updated", ]
 
 
 class CO2SavedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CO2Saved
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["date_created", "last_updated", ]
 
 
 class TaskListSerializer(serializers.ModelSerializer):
@@ -77,6 +82,18 @@ class TaskListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = "__all__"
+
+
+class TaskListForTaskCategorySerializer(serializers.ModelSerializer):
+    task_id = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Task
+        # fields = "__all__"
+        exclude = ["id", "files", "co2_saved", "sdgs", "impacts", "date_created", "last_updated", "user", "category"]
+    
+    def get_task_id(self, obj):
+        return obj.id
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -101,7 +118,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class TaskCategoryDetailSerializer(serializers.ModelSerializer):
-    categories_tasks = TaskSerializer(
+    categories_tasks = TaskListForTaskCategorySerializer(
         read_only=True,
         many=True,
     )
