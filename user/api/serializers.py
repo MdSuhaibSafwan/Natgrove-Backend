@@ -150,13 +150,11 @@ class UserPublicProfileSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(
         read_only=True,
     )
-    groups = UserGroupSerializer(read_only=True, many=True)
-    user_permissions = UserPermissionSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
         # fields = "__all__"
-        exclude = ["password", "last_login", "is_superuser", "is_admin", "date_created", "last_updated"]
+        exclude = ["password", "groups", "user_permissions", "last_login", "is_superuser", "is_admin", "date_created", "last_updated"]
 
 
 class RestTokenSerializer(serializers.ModelSerializer):

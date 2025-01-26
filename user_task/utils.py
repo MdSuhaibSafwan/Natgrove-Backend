@@ -2,8 +2,13 @@ from .models import TaskCategory, Task
 from django.db.models import Q
 
 
-def get_tasks_by_task_category(category_id, queryset):
-    queryset = queryset.filter(category__id=category_id)
+def get_tasks_by_filtering(category_id, search, queryset):
+    if category_id:
+        queryset = queryset.filter(category__id=category_id)
+        
+    if search:
+        queryset = queryset.filter(Q(name=search) | Q(description=search))
+
     return queryset
 
 

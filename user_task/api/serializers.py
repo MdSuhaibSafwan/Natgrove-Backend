@@ -78,6 +78,38 @@ class CO2SavedSerializer(serializers.ModelSerializer):
 
 
 class TaskListSerializer(serializers.ModelSerializer):
+    co2_saved = CO2SavedSerializer(
+        read_only=True
+    )
+    sdgs = SDGSerializer(
+        read_only=True,
+        many=True,
+    )
+
+    class Meta:
+        model = Task
+        # fields = "__all__"
+        exclude = ["user", "category", "impacts"]
+
+
+class TaskDetailSerializer(serializers.ModelSerializer):
+    user = UserPublicProfileSerializer(
+        read_only=True,
+    )
+    co2_saved = CO2SavedSerializer(
+        read_only=True
+    )
+    sdgs = SDGSerializer(
+        read_only=True,
+        many=True,
+    )
+    impacts = TaskImpactSerializer(
+        read_only=True,
+        many=True
+    )
+    category = TaskCategorySerializer(
+        read_only=True,
+    )
 
     class Meta:
         model = Task

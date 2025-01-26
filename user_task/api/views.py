@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from . import serializers
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.generics import ListAPIView
-from ..utils import get_tasks_by_task_category, search_in_task_and_task_category
+from ..utils import get_tasks_by_filtering, search_in_task_and_task_category
 from . import pagination
 from ..filters import UserTaskBookmarkFilter
 from rest_framework import permissions
@@ -16,13 +16,26 @@ from rest_framework.response import Response
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TaskSerializer
     pagination_class = pagination.TaskPagination
+    classes_according_to_action = {
+        "create": serializers.TaskSerializer,
+        "list": serializers.TaskListSerializer,
+        "retrieve": serializers.TaskDetailSerializer,
+    }
+
+    def get_serializer_class(self):
+        try:
+            serializer_class = self.classes_according_to_action[self.action]
+        except Exception as e:
+            print(e)
+            return self.serializer_class
+        
+        return serializer_class
 
     def filter_queryset(self, queryset):
         # "Load more" button is needed in [home--chose-action--view-action]
         category_id = self.request.query_params.get("category_id")
-        if category_id:
-            queryset = get_tasks_by_task_category(category_id, queryset)
-
+        search = self.request.query_params.get("search")
+        queryset = get_tasks_by_filtering(category_id, search, queryset)
         return queryset
 
     def get_queryset(self):
