@@ -151,6 +151,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+# DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+# STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "media/"
 

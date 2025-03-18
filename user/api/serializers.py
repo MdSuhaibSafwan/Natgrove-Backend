@@ -2,9 +2,42 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group, Permission
-from ..models import UserProfile
+from ..models import UserProfile, UserPointHistory
+from feed.models import UserPost
+from user_task.models import UserTask
 
 User = get_user_model()
+
+
+class UserTaskForProfileSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    co2_saved = serializers.SerializerMethodField()
+
+    class Meta:
+        model = UserTask
+        exclude = [
+            "is_active",
+            "is_completed",
+            "reminder",
+            "is_accepted",
+            "challenge",
+            "task",
+            "user",
+        ]
+    
+    def get_image(self, obj):
+        return obj.task.image.url
+    
+    def get_co2_saved(self, obj):
+
+        return "8 KG"
+
+
+class UserPointHistorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserPointHistory
+        fields = "__all__"
 
 
 class UserGroupSerializer(serializers.ModelSerializer):
@@ -63,12 +96,16 @@ class UserActivitySerializer(serializers.ModelSerializer):
         fields = ["point_history", "recent_posts"]
 
     def get_point_history(self, obj):
-
-        return None
+        qs = UserPointHistory.objects.all()
+        serializer = UserPointHistorySerializer(qs, many=True)
+        return serializer.data
 
     def get_recent_posts(self, obj):
-        
-        return None
+        qs = UserTask.objects.filter(
+            id__in=UserPost.objects.all().values_list("user_task__id", flat=True)
+        )
+        serializer = UserTaskForProfileSerializer(qs, many=True)
+        return serializer.data
 
 
 class UserChangePasswordSerializer(serializers.Serializer):

@@ -39,17 +39,42 @@ class User(AbstractBaseUser, PermissionsMixin):
         ["CU", "COMAPNY USER"],
         ["NU", "NORMAL USER"],
     ]
-    email = models.EmailField(unique=True, )
-    first_name = models.CharField(max_length=100, null=True)
-    middle_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length=100, null=True)
-    address = models.TextField(null=True)
-    phone_number = models.CharField(max_length=16, null=True)
-
-    is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-
+    email = models.EmailField(
+        unique=True, 
+    )
+    first_name = models.CharField(
+        max_length=100, 
+        null=True
+    )
+    middle_name = models.CharField(
+        max_length=100, 
+        null=True
+    )
+    last_name = models.CharField(
+        max_length=100, 
+        null=True
+    )
+    address = models.TextField(
+        null=True
+    )
+    phone_number = models.CharField(
+        max_length=16, 
+        null=True
+    )
+    bio = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+    )
+    is_superuser = models.BooleanField(
+        default=False
+    )
+    is_active = models.BooleanField(
+        default=True
+    )
+    is_admin = models.BooleanField(
+        default=False,
+    )
     user_type = models.CharField(
         choices=USER_TYPE,
         max_length=2,
@@ -132,3 +157,24 @@ class Company(models.Model):
         return self.name
 
 
+class UserPointHistory(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    title = models.CharField(
+        max_length=100,
+    )
+    points = models.PositiveIntegerField()
+    has_earned = models.BooleanField(
+        default=True,
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return self.title
