@@ -101,6 +101,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
+    
+    def get_full_name(self):
+        return self.email
+    
+    @property
+    def full_name(self):
+        return self.get_full_name()
 
 
 class UserProfile(models.Model):

@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 from django.contrib.auth import get_user_model
-from .serializers import ChallengeSerializer, ChallengeDetailSerializer, ChallengeAddTaskSerializer, ChallengeJoinSerializer
+from .serializers import ChallengeSerializer, ChallengeDetailSerializer, ChallengeAddTaskSerializer, ChallengeJoinSerializer, TaskForChallengeCompleteSerializer
 from ..models import Challenge
 from rest_framework.decorators import action
 from rest_framework import status
@@ -29,6 +29,15 @@ class ChallengeViewSet(viewsets.ModelViewSet):
                 return j
 
         return self.serializer_class
+    
+    @action(methods=["POST", ], detail=True, url_path="complete-task")
+    def complete_challenge_task_api_view(self, *args, **kwargs):
+        obj = self.get_object()
+        serializer = TaskForChallengeCompleteSerializer(data=self.request.data)
+        serializer.context.update({"request": self.request, "challenge": obj})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(methods=["POST", ], detail=True, url_path="add-tasks")
     def add_task_to_challenge_api_view(self, *args, **kwargs):

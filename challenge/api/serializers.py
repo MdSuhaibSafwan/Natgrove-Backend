@@ -1,8 +1,28 @@
 from rest_framework import serializers
 from ..models import Challenge, UserChallengeJoining
-from user_task.api.serializers import TaskSerializer, TaskImpactSerializer
-from user_task.models import Task, TaskImpact
+from user_task.api.serializers import TaskSerializer, TaskImpactSerializer, UserTaskFileSerializer
+from user_task.models import Task, TaskImpact, UserTask, UserTaskFile
 from user.api.serializers import UserPublicProfileSerializer
+
+
+class UserTaskForChallengeDetailSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    files_uploaded = UserTaskFileSerializer(
+        read_only=True,
+        many=True,
+    )
+
+    class Meta:
+        model = UserTask
+        fields = [
+            "user",
+            "files_uploaded",
+            "description",
+            "date_created"
+        ]
+
+    def get_user(self, obj):
+        return f"{obj.user.get_full_name()}"
 
 
 class UserChallengeJoiningSerializer(serializers.ModelSerializer):
@@ -65,8 +85,9 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         return float(50)
 
     def get_activities(self, obj):
-
-        return []
+        qs = obj.usertask_set.all()
+        serializer = UserTaskForChallengeDetailSerializer(qs, many=True)
+        return serializer.data
 
     def get_leaderboard(self, obj):
         qs = obj.userchallengejoining_set.all().order_by("-points")
@@ -118,3 +139,37 @@ class ChallengeJoinSerializer(serializers.Serializer):
         challenge.users.add(request.user)
         challenge.save()
         return challenge        
+
+
+class TaskForChallengeCompleteSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+    challenge = serializers.StringRelatedField(read_only=True)
+    files = serializers.ListField(
+        child=serializers.FileField(), 
+        write_only=True,
+    )
+    files_uploaded = UserTaskFileSerializer(
+        read_only=True,
+        many=True,
+    )
+
+    class Meta:
+        model = UserTask
+        fields = "__all__"
+
+    def create(self, validated_data):        
+        request = self.context.get('request')
+        challenge = self.context.get("challenge")
+        validated_data["user"] = request.user
+        validated_data["challenge"] = challenge
+
+        files = validated_data.pop("files")
+        obj = super().create(validated_data)
+
+        for file in files:
+            UserTaskFile.objects.create(
+                user_task=obj,
+                file=file
+            )
+        
+        return obj
