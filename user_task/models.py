@@ -56,6 +56,11 @@ class TaskCategory(BaseModel):
     description = models.TextField(
         null=True, blank=True,
     )
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="task-category/"
+    )
 
     def __str__(self):
         return self.title
