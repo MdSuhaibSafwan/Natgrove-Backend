@@ -1,8 +1,17 @@
 from rest_framework import serializers
-from ..models import Challenge, UserChallengeJoining
+from ..models import Challenge, UserChallengeJoining, ChallengeImage
 from user_task.api.serializers import TaskSerializer, TaskImpactSerializer, UserTaskFileSerializer
 from user_task.models import Task, TaskImpact, UserTask, UserTaskFile
 from user.api.serializers import UserPublicProfileSerializer
+
+
+class ChallengeImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChallengeImage
+        exclude = [
+            "challenge"
+        ]
 
 
 class UserTaskForChallengeDetailSerializer(serializers.ModelSerializer):
@@ -65,6 +74,10 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
     is_user_already_joined = serializers.SerializerMethodField()
     challenge_percentage_completed = serializers.SerializerMethodField()
     challenge_impacts = serializers.SerializerMethodField()
+    images = ChallengeImageSerializer(
+        read_only=True,
+        many=True,
+    )
 
     class Meta:
         model = Challenge

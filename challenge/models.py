@@ -51,6 +51,26 @@ class Challenge(models.Model):
         return now > self.challenge_expiry_time
 
 
+class ChallengeImage(models.Model):
+    challenge = models.ForeignKey(
+        Challenge,
+        on_delete=models.CASCADE,
+        related_name="images"
+    )
+    image = models.ImageField(
+        upload_to="challenge/images",
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True,
+    )
+    last_updated = models.DateTimeField(
+        auto_now=True,
+    )
+
+    def __str__(self):
+        return str(self.challenge)
+
+
 class TaskChallenge(models.Model):
     task = models.ForeignKey(
         Task,
