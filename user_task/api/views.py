@@ -48,10 +48,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         context["request"] = self.request
         return context
     
-    @action(detail=True, methods=["POST", ])
-    def add_image_to_task(self, *args, **kwargs):
+    @action(detail=True, methods=["POST", ], url_path="add-file")
+    def add_file_to_task(self, *args, **kwargs):
+        task_obj = self.get_object()
         serializer = serializers.TaskImageAddSerializer(
             data=self.request.data,
+            instance=task_obj,
         )
         serializer.context.update({
             "task": self.get_object(),
@@ -62,13 +64,15 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-    @action(detail=True, methods=["POST", ])
+    @action(detail=True, methods=["POST", ], url_path="add-image")
     def add_image_to_task(self, *args, **kwargs):
+        task_obj = self.get_object()
         serializer = serializers.TaskImageAddSerializer(
             data=self.request.data,
+            instance=task_obj,
         )
         serializer.context.update({
-            "task": self.get_object(),
+            "task": task_obj,
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
