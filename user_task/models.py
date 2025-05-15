@@ -84,6 +84,7 @@ class Task(BaseModel):
     )
     image = models.ImageField(
         upload_to="task/image",
+        null=True
     )
     points = models.PositiveIntegerField()
     max_limit_complete = models.PositiveIntegerField(

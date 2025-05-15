@@ -11,13 +11,14 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.decorators import action
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.TaskSerializer
     pagination_class = pagination.TaskPagination
     classes_according_to_action = {
-        "create": serializers.TaskSerializer,
+        "create": serializers.TaskCreateSerializer,
         "list": serializers.TaskListSerializer,
         "retrieve": serializers.TaskDetailSerializer,
     }
@@ -41,6 +42,38 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         qs = Task.objects.all()
         return qs
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+    
+    @action(detail=True, methods=["POST", ])
+    def add_image_to_task(self, *args, **kwargs):
+        serializer = serializers.TaskImageAddSerializer(
+            data=self.request.data,
+        )
+        serializer.context.update({
+            "task": self.get_object(),
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    @action(detail=True, methods=["POST", ])
+    def add_image_to_task(self, *args, **kwargs):
+        serializer = serializers.TaskImageAddSerializer(
+            data=self.request.data,
+        )
+        serializer.context.update({
+            "task": self.get_object(),
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TaskCategoryListAPIView(ListAPIView):
