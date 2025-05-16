@@ -150,12 +150,19 @@ class TaskImageAddSerializer(serializers.ModelSerializer):
 
 
 class TaskFileAddSerializer(serializers.ModelSerializer):
+    files = serializers.FileField()
 
     class Meta:
         model = Task
         fields = [
             "files",
         ]
+
+    def update(self, instance, validated_data):
+        files = validated_data.get("files")
+        instance.files = files
+        instance.save()
+        return instance
 
 
 class TaskSerializer(serializers.ModelSerializer):

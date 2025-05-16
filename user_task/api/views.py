@@ -51,7 +51,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["POST", ], url_path="add-file")
     def add_file_to_task(self, *args, **kwargs):
         task_obj = self.get_object()
-        serializer = serializers.TaskImageAddSerializer(
+        serializer = serializers.TaskFileAddSerializer(
             data=self.request.data,
             instance=task_obj,
         )
