@@ -2,6 +2,7 @@ from rest_framework import serializers
 from ..models import Task, TaskCategory, TaskImpact, CO2Saved, SDG, UserTask, UserTaskReward, UserTaskFile, UserTaskBookmark
 from user.api.serializers import UserPublicProfileSerializer
 from challenge.models import TaskChallenge
+from feed.models import UserPost
 from django.db.models import Q
 from django.db import IntegrityError
 from django.contrib.auth import get_user_model
@@ -250,6 +251,12 @@ class UserTaskSerializer(serializers.ModelSerializer):
                 file=file
             )
         self.new_instance_created = True
+
+        UserPost.objects.create(
+            user=request.user,
+            user_task=obj,
+        )
+
         return obj
 
 

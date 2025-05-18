@@ -14,6 +14,12 @@ class UserPost(models.Model):
         "user_task.UserTask",
         on_delete=models.CASCADE,
     )
+    challenge = models.ForeignKey(
+        "challenge.Challenge",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     date_created = models.DateTimeField(
         auto_now_add=True
     )

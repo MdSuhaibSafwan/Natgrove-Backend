@@ -60,6 +60,11 @@ class ChallengeImage(models.Model):
     image = models.ImageField(
         upload_to="challenge/images",
     )
+    name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
     date_created = models.DateTimeField(
         auto_now_add=True,
     )

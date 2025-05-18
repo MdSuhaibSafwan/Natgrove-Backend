@@ -3,6 +3,8 @@ from ..models import Challenge, UserChallengeJoining, ChallengeImage
 from user_task.api.serializers import TaskSerializer, TaskImpactSerializer, UserTaskFileSerializer
 from user_task.models import Task, TaskImpact, UserTask, UserTaskFile
 from user.api.serializers import UserPublicProfileSerializer
+from feed.models import UserPost
+from feed.api.serializers import UserPostSerializer
 
 
 class ChallengeImageSerializer(serializers.ModelSerializer):
@@ -89,7 +91,7 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         tasks = obj.tasks.all()
         qs = TaskImpact.objects.filter(
             impact_tasks__in=tasks.values_list("id", flat=True)
-        )
+        ).distinct()
         serializer = TaskImpactSerializer(qs, many=True)
         return serializer.data
 
@@ -98,8 +100,10 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         return float(50)
 
     def get_activities(self, obj):
-        qs = obj.usertask_set.all()
-        serializer = UserTaskForChallengeDetailSerializer(qs, many=True)
+        qs = UserPost.objects.filter(
+            challenge=obj,
+        )
+        serializer = UserPostSerializer(qs, many=True)
         return serializer.data
 
     def get_leaderboard(self, obj):
@@ -184,5 +188,11 @@ class TaskForChallengeCompleteSerializer(serializers.ModelSerializer):
                 user_task=obj,
                 file=file
             )
+
+        UserPost.objects.create(
+            user_task=obj,
+            user=request.user,
+            challenge=challenge,
+        )
         
         return obj
