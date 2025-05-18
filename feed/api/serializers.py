@@ -1,7 +1,7 @@
 from ..models import UserPost, PostComment, PostReact
 from rest_framework import serializers
 from user.api.serializers import UserPublicProfileSerializer
-from user_task.api.serializers import UserTaskSerializer, TaskSerializer
+from user_task.api.serializers import UserTaskSerializer, TaskSerializer, CO2SavedSerializer
 from user_task.models import UserTask, UserTaskFile
 
 
@@ -43,10 +43,24 @@ class UserPostSerializer(serializers.ModelSerializer):
     user_task = UserTaskForFeedSerializer(
         read_only=True,
     )
+    co2_saved = serializers.SerializerMethodField()
+    total_comments = serializers.SerializerMethodField()
+    total_likes = serializers.SerializerMethodField()
 
     class Meta:
         model = UserPost
         fields = "__all__"
+
+    def get_co2_saved(self, obj):
+        co2_saved = obj.user_task.task.co2_saved
+        serializer = CO2SavedSerializer(co2_saved)
+        return serializer.data
+    
+    def get_total_likes(self, obj):
+        return obj.postreact_set.all().count()
+    
+    def get_total_comments(self, obj):
+        return obj.postcomment_set.all().count()
 
 
 class UserPostDetailSerializer(serializers.ModelSerializer):

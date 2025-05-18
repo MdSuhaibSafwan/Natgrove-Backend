@@ -239,6 +239,9 @@ class UserTaskSerializer(serializers.ModelSerializer):
         request = self.context.get("request")
         validated_data["user"] = request.user
         files = validated_data.pop("files")
+        if not self.task.is_verification_required:
+            validated_data["is_accepted"] = True
+
         obj = super().create(validated_data)
 
         for file in files:
