@@ -96,7 +96,6 @@ AUTH_USER_MODEL = "user.User"
 
 POSTGRES_URL = os.environ.get('DATABASE_URL_GENERAL', None)
 
-
 if DEVELOPMENT_MODE:
     DATABASES = {
         'default': {
